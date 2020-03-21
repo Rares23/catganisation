@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cardRadius">16dp</dimen>
+    <style name="bigTextSize">22sp</style>
+    <dimen name="mediumTextSize">18sp</dimen>
+    <dimen name="normalTextSize">14sp</dimen>
+    <dimen name="smallTextSize">12sp</dimen>
+    <dimen name="verticalMargin">16dp</dimen>
+    <dimen name="verticalHalfMargin">8dp</dimen>
+    <dimen name="horizontalMargin">16dp</dimen>
+    <dimen name="horizontalHalfMargin">8dp</dimen>
+</resources>

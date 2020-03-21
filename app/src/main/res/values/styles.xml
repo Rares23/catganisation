@@ -1,11 +1,59 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Toolbar" parent="AppTheme">
+        <item name="titleTextColor">@color/colorWhite</item>
+    </style>
+    
+    <style name="CardViewBreed" parent="AppTheme">
+        <item name="cardCornerRadius">@dimen/cardRadius</item>
+        <item name="backgroundColor">@color/colorLightWhite</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="android:layout_marginTop">@dimen/verticalHalfMargin</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/verticalHalfMargin</item>
+    </style>
+
+    <style name="RecyclerViewBreedsList" parent="AppTheme">
+        <item name="android:paddingTop">@dimen/verticalHalfMargin</item>
+        <item name="android:paddingBottom">@dimen/verticalHalfMargin</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="ItemViewBreedImage" parent="AppTheme">
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="ItemViewBreedName" parent="AppTheme">
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginTop">@dimen/verticalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="ItemViewBreedDescription" parent="AppTheme">
+        <item name="android:textSize">@dimen/smallTextSize</item>
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="TextViewNoBreedsLabel" parent="AppTheme">
+        <item name="android:textSize">@dimen/smallTextSize</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
     </style>
 
 </resources>
