@@ -3,10 +3,9 @@ package com.catganisation.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-import com.catganisation.data.network.ApiService
+import com.catganisation.data.network.BreedApiService
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -18,12 +17,12 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitInterface() : ApiService = Retrofit.Builder()
+    fun provideBreedApiService() : BreedApiService = Retrofit.Builder()
             .baseUrl("https://api.thecatapi.com/v1/")
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
-            .create(ApiService::class.java)
+            .create(BreedApiService::class.java)
 
     @Provides
     @Singleton

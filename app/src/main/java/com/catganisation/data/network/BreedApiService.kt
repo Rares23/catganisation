@@ -5,7 +5,7 @@ import com.catganisation.data.models.BreedImage
 import io.reactivex.Observable
 import retrofit2.http.*
 
-interface BreedService {
+interface BreedApiService {
     @Headers("x-api-key: DEMO-API-KEY")
     @GET("breeds")
     fun fetchBreeds() : Observable<List<Breed>>

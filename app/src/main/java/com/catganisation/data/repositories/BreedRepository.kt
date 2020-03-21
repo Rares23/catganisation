@@ -1,8 +1,9 @@
 package com.catganisation.data.repositories
 
 import com.catganisation.data.models.Breed
+import com.catganisation.data.models.BreedImage
 import io.reactivex.Observable
 
 interface BreedRepository {
-    fun fetchBreeds() : Observable<List<Breed>>
+    fun getBreeds() : Observable<List<Breed>>
 }

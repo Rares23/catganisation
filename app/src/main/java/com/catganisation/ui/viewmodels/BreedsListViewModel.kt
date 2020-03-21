@@ -15,7 +15,7 @@ class BreedsListViewModel @Inject constructor(private val breedRepository: Breed
     val breedsList: MutableLiveData<List<Breed>> = MutableLiveData()
 
     fun getBreeds() {
-        subscription = breedRepository.fetchBreeds()
+        subscription = breedRepository.getBreeds()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -32,7 +32,6 @@ class BreedsListViewModel @Inject constructor(private val breedRepository: Breed
                     onFetchBreedsListError(error)
                 }
             )
-
     }
 
     private fun onFetchBreedsListStart() {

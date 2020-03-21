@@ -1,14 +1,16 @@
 package com.catganisation.data.models
 
+import com.squareup.moshi.Json
+
 
 data class Breed(
-    val id: String,
-    val name: String,
-    val description: String,
-    val countryCode: String,
-    val temperament: String,
-    val wikiLink: String,
-    val imageUrl: String
+    @field:Json(name = "id") val id: String,
+    @field:Json(name = "name") val name: String,
+    @field:Json(name = "description")val description: String,
+    @field:Json(name = "country_code")val countryCode: String,
+    @field:Json(name = "temperament")val temperament: String,
+    @field:Json(name = "wikipedia_url")val wikiLink: String,
+    var imageUrl: String?
 ) {
 
 }

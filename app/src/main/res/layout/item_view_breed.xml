@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/imageView_breed"
             android:layout_width="124dp"
-            android:layout_height="124dp"
+            android:layout_height="0dp"
             style="@style/ItemViewBreedImage"
             android:src="@drawable/ic_cat_image_placeholder"
             app:layout_constraintTop_toTopOf="parent"

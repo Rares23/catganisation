@@ -29,7 +29,7 @@
     </style>
 
     <style name="ItemViewBreedImage" parent="AppTheme">
-        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="ItemViewBreedName" parent="AppTheme">
@@ -47,6 +47,9 @@
         <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
         <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
         <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:lines">4</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="TextViewNoBreedsLabel" parent="AppTheme">
