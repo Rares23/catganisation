@@ -1,9 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageView_breed"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_cat_image_placeholder"
+            style="@style/ImageViewBreedDetailsImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView_breedName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextViewBreedDetailsTitle"
+            tools:text="Maine Coon"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_breed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/textView_breedDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextViewBreedDetailsDescription"
+            tools:text="For those owners who desire a feline capable of evoking the great outdoors, the strikingly beautiful Chausie retains a bit of the wild in its appearance but has the house manners of our friendly, familiar moggies. Very playful, this cat needs a large amount of space to be able to fully embrace its hunting instincts."
+            app:layout_constraintTop_toBottomOf="@+id/textView_breedName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imageView_temper"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            style="@style/ImageViewBreedDetailsInfoIcons"
+            app:layout_constraintTop_toBottomOf="@+id/textView_breedDetails"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_temper"/>
+
+        <TextView
+            android:id="@+id/textView_temper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextViewBreedDetailsInfoText"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_temper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Active, Energetic, Independent, Intelligent, Gentle"/>
+
+        <ImageView
+            android:id="@+id/imageView_location"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            style="@style/ImageViewBreedDetailsInfoIcons"
+            app:layout_constraintTop_toBottomOf="@+id/textView_temper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_location"/>
+
+        <TextView
+            android:id="@+id/textView_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextViewBreedDetailsInfoText"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Romania"/>
+
+        <ImageView
+            android:id="@+id/imageView_wiki"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            style="@style/ImageViewBreedDetailsInfoIcons"
+            app:layout_constraintTop_toBottomOf="@+id/textView_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_wiki"/>
+
+        <TextView
+            android:id="@+id/textView_wiki"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextViewBreedDetailsInfoText"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_wiki"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="https://en.wikipedia.org/wiki/Abyssinian_(cat)"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
