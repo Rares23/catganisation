@@ -12,9 +12,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class, RepositoryModule::class])
+@Module(includes = [
+    ViewModelModule::class,
+    RepositoryModule::class,
+    SchedulerModule::class
+])
 class AppModule {
-
     @Provides
     @Singleton
     fun provideBreedApiService() : BreedApiService = Retrofit.Builder()

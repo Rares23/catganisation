@@ -3,21 +3,28 @@ package com.catganisation.ui.viewmodels
 import androidx.lifecycle.MutableLiveData
 import com.catganisation.data.models.Breed
 import com.catganisation.data.repositories.BreedRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class BreedsListViewModel @Inject constructor(private val breedRepository: BreedRepository) : BaseViewModel() {
+class BreedsListViewModel @Inject constructor(
+    private val breedRepository: BreedRepository,
+    private val ioScheduler: Scheduler,
+    private val uiScheduler: Scheduler) : BaseViewModel() {
 
     private lateinit var subscription: Disposable
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val breedsList: MutableLiveData<List<Breed>> = MutableLiveData()
 
+    init {
+        loading.value = true
+        breedsList.value = emptyList()
+    }
+
     fun getBreeds() {
         subscription = breedRepository.getBreeds()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(ioScheduler)
+            .observeOn(uiScheduler)
             .doOnSubscribe {
                 onFetchBreedsListStart()
             }
