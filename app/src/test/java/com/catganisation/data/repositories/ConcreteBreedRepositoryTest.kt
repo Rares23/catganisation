@@ -37,36 +37,60 @@ class ConcreteBreedRepositoryTest {
     private lateinit var breedRepository: BreedRepository
 
     var breedListSeed: List<Breed> = listOf(
-        Breed("1", "A", "abc", "RO", "x", "wiki.com", null)
+        Breed("a", "Axi", "abc", "RO", "x", "wiki.com", null),
+        Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", null),
+        Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", null)
     )
 
-    var breedImagesListSeed: List<BreedImage> = listOf(
-        BreedImage("1A", "1A.png"),
-        BreedImage("2A", "2A.png")
+    var aBreedImagesListSeed: List<BreedImage> = listOf(
+        BreedImage("1a", "1a.png"),
+        BreedImage("2a", "2a.png")
+    )
+
+    var bBreedImagesListSeed: List<BreedImage> = listOf(
+        BreedImage("1b", "1b.png"),
+        BreedImage("2b", "2b.png")
+    )
+
+    var cBreedImagesListSeed: List<BreedImage> = listOf(
+        BreedImage("1c", "1c.png"),
+        BreedImage("2c", "2c.png")
     )
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         breedRepository = ConcreteBreedRepository(breedsApiService)
+
+        Mockito.`when`(breedsApiService.fetchBreeds())
+            .thenReturn(Observable.just(breedListSeed))
+
+        Mockito.`when`(breedsApiService.fetchBreedImages("a"))
+            .thenReturn(Observable
+                .just(aBreedImagesListSeed)
+                .delay(1, TimeUnit.SECONDS))
+
+        Mockito.`when`(breedsApiService.fetchBreedImages("b"))
+            .thenReturn(Observable
+                .just(bBreedImagesListSeed)
+                .delay(1, TimeUnit.SECONDS))
+
+        Mockito.`when`(breedsApiService.fetchBreedImages("c"))
+            .thenReturn(Observable
+                .just(cBreedImagesListSeed)
+                .delay(1, TimeUnit.SECONDS))
     }
 
     @After
     fun tearDown() {}
 
     @Test
-    fun `get breeds list with correct breed images`() {
-        Mockito.`when`(breedsApiService.fetchBreeds())
-            .thenReturn(Observable.just(breedListSeed))
-
-        Mockito.`when`(breedsApiService.fetchBreedImages("1"))
-            .thenReturn(Observable
-                .just(breedImagesListSeed)
-                .delay(5, TimeUnit.SECONDS))
-
+    fun `test get breeds list method with correct breed images`() {
         val testObserver: TestObserver<List<Breed>> = TestObserver()
         val expected: List<Breed> = listOf(
-            Breed("1", "A", "abc", "RO", "x", "wiki.com", "1A.png")
+            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png"),
+            Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", "1b.png"),
+            Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", "1c.png")
         )
 
         breedRepository.getBreeds().subscribe(testObserver)
