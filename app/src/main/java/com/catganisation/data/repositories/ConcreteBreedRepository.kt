@@ -18,7 +18,7 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
             .doOnNext {breeds ->
                 breeds.forEach {breed ->
                     if(breed.imageUrl.isNullOrEmpty()) {
-                        val cachedImageUrl: String? = cachedImagesUrls.get(breed.id)
+                        val cachedImageUrl: String? = cachedImagesUrls[breed.id]
                         if(cachedImageUrl.isNullOrEmpty()) {
                             fetchBreedImages(breed.id).subscribe {breedImages ->
                                 if(!breedImages.isNullOrEmpty()) {

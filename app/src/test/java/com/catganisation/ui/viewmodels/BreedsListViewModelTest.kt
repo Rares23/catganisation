@@ -44,7 +44,6 @@ class BreedsListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-
         breedsListViewModel = BreedsListViewModel(breedsRepository,
             Schedulers.trampoline(),
             Schedulers.trampoline())
