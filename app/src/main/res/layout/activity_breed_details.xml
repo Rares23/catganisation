@@ -3,6 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar_breed_details" />
     <include layout="@layout/content_breed_details" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

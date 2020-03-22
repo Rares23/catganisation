@@ -6,4 +6,5 @@ import io.reactivex.Observable
 
 interface BreedRepository {
     fun getBreeds() : Observable<List<Breed>>
+    fun getBreedById(breedId: String) : Observable<Breed?>
 }
