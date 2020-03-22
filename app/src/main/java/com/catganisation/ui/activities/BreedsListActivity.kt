@@ -1,5 +1,6 @@
 package com.catganisation.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,12 +10,13 @@ import com.catganisation.R
 import com.catganisation.app.CatganisationApplication
 import com.catganisation.di.components.DaggerAppComponent
 import com.catganisation.ui.adapters.BreedAdapter
+import com.catganisation.ui.listeners.OnBreedItemSelect
 import com.catganisation.ui.viewmodels.BreedsListViewModel
 import kotlinx.android.synthetic.main.content_breeds_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class BreedsListActivity : AppCompatActivity() {
+class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
 
     @Inject
     lateinit var breedsListViewModel: BreedsListViewModel
@@ -34,7 +36,7 @@ class BreedsListActivity : AppCompatActivity() {
     }
 
     private fun initBreedsList() {
-        breedListAdapter = BreedAdapter(this)
+        breedListAdapter = BreedAdapter(this, this)
         val layoutManager: LinearLayoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView_breedsList.layoutManager = layoutManager
@@ -70,5 +72,11 @@ class BreedsListActivity : AppCompatActivity() {
         })
 
         breedsListViewModel.getBreeds()
+    }
+
+    override fun selectBreed(breedId: String) {
+        val intent: Intent = Intent(this, BreedDetailsActivity::class.java)
+        intent.putExtra("breedId", breedId)
+        startActivity(intent)
     }
 }
