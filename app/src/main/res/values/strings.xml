@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Catganisation</string>
+    <string name="details_page_title">Details</string>
     <string name="no_breeds">There are no breeds to show right now! Try again later</string>
 </resources>
