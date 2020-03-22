@@ -6,6 +6,8 @@ import com.catganisation.data.network.BreedApiService
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Single
+import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ConcreteBreedRepository @Inject constructor(private val breedApiService: BreedApiService) : BreedRepository {
@@ -15,6 +17,9 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
 
     override fun getBreeds(): Observable<List<Breed>> {
         return fetchBreeds()
+            .map {
+                it.sortedBy { breed -> breed.name }
+            }
             .doOnNext {breeds ->
                 breeds.forEach {breed ->
                     if(breed.imageUrl.isNullOrEmpty()) {
