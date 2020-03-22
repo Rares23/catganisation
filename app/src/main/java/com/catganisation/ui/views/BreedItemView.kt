@@ -28,13 +28,14 @@ class BreedItemView : FrameLayout {
     fun setContent(breed: Breed) {
         textView_breedName.text = breed.name
         textView_breedDescription.text = breed.description
-
-        if(breed.imageUrl.isNullOrEmpty()) {
-            imageView_breed.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_cat_image_placeholder, null))
-        } else {
-            Glide.with(context)
-                .load(breed.imageUrl)
-                .into(imageView_breed)
+        imageView_breed.post {
+            if(breed.imageUrl.isNullOrEmpty()) {
+                imageView_breed.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_cat_image_placeholder, null))
+            } else {
+                Glide.with(context)
+                    .load(breed.imageUrl)
+                    .into(imageView_breed)
+            }
         }
     }
 }
