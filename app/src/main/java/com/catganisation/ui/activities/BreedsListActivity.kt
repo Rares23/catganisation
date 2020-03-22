@@ -62,10 +62,10 @@ class BreedsListActivity : AppCompatActivity() {
             if(loading) {
                 progressBar_loading.visibility = View.VISIBLE
                 recyclerView_breedsList.visibility = View.GONE
+                textView_noBreeds.visibility = View.GONE
             } else {
                 progressBar_loading.visibility = View.GONE
                 recyclerView_breedsList.visibility = View.VISIBLE
-                textView_noBreeds.visibility = View.GONE
             }
         })
 
