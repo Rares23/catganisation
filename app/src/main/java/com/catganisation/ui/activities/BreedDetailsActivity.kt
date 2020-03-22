@@ -19,6 +19,7 @@ class BreedDetailsActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         toolbar.title = getString(R.string.details_page_title)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
     }

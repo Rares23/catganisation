@@ -10,6 +10,8 @@
 
     <style name="Toolbar" parent="AppTheme">
         <item name="titleTextColor">@color/colorWhite</item>
+        <item name="iconTint">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
     </style>
     
     <style name="CardViewBreed" parent="AppTheme">
