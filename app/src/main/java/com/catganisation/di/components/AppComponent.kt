@@ -1,6 +1,7 @@
 package com.catganisation.di.components
 
 import com.catganisation.di.modules.AppModule
+import com.catganisation.ui.activities.BreedDetailsActivity
 import com.catganisation.ui.activities.BreedsListActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -9,4 +10,5 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun inject(breedsListActivity: BreedsListActivity)
+    fun inject(breedDetailsActivity: BreedDetailsActivity)
 }

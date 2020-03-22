@@ -60,5 +60,18 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
     private fun fetchBreedImages(breedId: String): Observable<List<BreedImage>> {
         return breedApiService.fetchBreedImages(breedId)
     }
+
+    override fun getBreedById(breedId: String): Observable<Breed?> {
+        return Observable.just(cachedBreeds)
+            .map { breeds ->
+                breeds.forEach {breed ->
+                    if(breed.id == breedId) {
+                        return@map breed
+                    }
+                }
+
+                return@map null
+            }
+    }
 }
 

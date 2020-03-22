@@ -5,9 +5,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.catganisation.data.models.Breed
+import com.catganisation.ui.listeners.OnBreedItemSelect
 import com.catganisation.ui.views.BreedItemView
 
-class BreedAdapter(private val context: Context) : RecyclerView.Adapter<BreedAdapter.BreedViewHolder>() {
+class BreedAdapter(
+    private val context: Context,
+    private val onBreedItemSelect: OnBreedItemSelect) : RecyclerView.Adapter<BreedAdapter.BreedViewHolder>() {
 
     private val breeds: ArrayList<Breed> = ArrayList()
 
@@ -28,6 +31,9 @@ class BreedAdapter(private val context: Context) : RecyclerView.Adapter<BreedAda
 
     override fun onBindViewHolder(holder: BreedViewHolder, position: Int) {
         holder.view.setContent(breeds[position])
+        holder.view.setOnClickListener {
+            onBreedItemSelect.selectBreed(breeds[holder.adapterPosition].id)
+        }
     }
 
     fun setBreeds(breeds: List<Breed>) {

@@ -10,6 +10,8 @@
 
     <style name="Toolbar" parent="AppTheme">
         <item name="titleTextColor">@color/colorWhite</item>
+        <item name="iconTint">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
     </style>
     
     <style name="CardViewBreed" parent="AppTheme">
@@ -57,6 +59,52 @@
         <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
         <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="ImageViewBreedDetailsImage" parent="AppTheme">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="TextViewBreedDetailsTitle" parent="AppTheme">
+        <item name="android:textSize">@dimen/bigTextSize</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/verticalDoubleMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="TextViewBreedDetailsDescription" parent="AppTheme">
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">@dimen/verticalHalfMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+    </style>
+
+    <style name="ImageViewBreedDetailsInfoIcons" parent="AppTheme">
+        <item name="android:layout_marginTop">@dimen/verticalDoubleMargin</item>
+        <item name="tint">@color/colorLightGray</item>
+    </style>
+
+    <style name="TextViewBreedDetailsInfoText" parent="AppTheme">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:layout_marginTop">@dimen/verticalHalfMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/verticalDoubleMargin</item>
+    </style>
+
+    <style name="ExpandedTitleText" parent="AppTheme">
+        <item name="android:textColor">@color/colorTransparent</item>
+    </style>
+
+    <style name="CollapsedTitleText" parent="AppTheme">
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
 </resources>

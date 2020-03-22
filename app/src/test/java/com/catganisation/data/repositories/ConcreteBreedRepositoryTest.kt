@@ -96,4 +96,16 @@ class ConcreteBreedRepositoryTest {
         breedRepository.getBreeds().subscribe(testObserver)
         testObserver.assertValue(expected)
     }
+
+    @Test
+    fun `test get breed by id method`() {
+        val testObserver: TestObserver<Breed> = TestObserver()
+        val expected: Breed = Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png")
+
+        breedRepository.getBreeds()
+            .doOnNext{
+            breedRepository.getBreedById("a").subscribe(testObserver)
+            testObserver.assertValue(expected)
+        }
+    }
 }
