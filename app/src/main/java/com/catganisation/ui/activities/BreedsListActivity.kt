@@ -1,7 +1,11 @@
 package com.catganisation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -45,6 +49,40 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
 
     private fun initToolbar() {
         toolbar.title = getString(R.string.app_name)
+        setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        MenuInflater(this).inflate(R.menu.menu_breeds_list, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menuItem_filters -> {
+                openFilters()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openFilters() {
+        val intent = Intent(this, FiltersActivity::class.java)
+        startActivityForResult(intent, ActivityRequestCodes.FILTERS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            ActivityRequestCodes.FILTERS_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    breedsListViewModel.getBreeds()
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+
     }
 
     private fun initializeViewModel() {
@@ -58,6 +96,10 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
             } else {
                 textView_noBreeds.visibility = View.GONE
             }
+        })
+
+        breedsListViewModel.breedItemNotifier.observe(this, Observer {
+            breedListAdapter.updateBreed(it)
         })
 
         breedsListViewModel.loading.observe(this, Observer {loading ->

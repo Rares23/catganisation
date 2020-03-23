@@ -1,15 +1,18 @@
 package com.catganisation.data.repositories
 
+import androidx.lifecycle.Transformations.map
 import com.catganisation.data.models.Country
 import com.catganisation.data.datasource.CountriesDataSource
+import io.reactivex.Flowable.just
 import io.reactivex.Observable
+import io.reactivex.Observer
 import javax.inject.Inject
 
 class ConcreteCountryRepository @Inject constructor(
     private val countriesProvider: CountriesDataSource
 ) : CountryRepository {
 
-    private var cacheCountries: List<Country> = emptyList()
+    private var cacheCountries: List<Country> = listOf()
 
     override fun getAllCountries(): Observable<List<Country>> {
         return if(cacheCountries.isEmpty()) {
@@ -17,9 +20,11 @@ class ConcreteCountryRepository @Inject constructor(
                 .map {locales ->
                     val countries: ArrayList<Country> = ArrayList()
                     locales.forEach {locale ->
-                        countries.add(Country(locale.country, locale.displayName))
+                        val country = Country(locale.country, locale.displayName)
+                        countries.add(country)
                     }
-                    cacheCountries = countries
+
+                    cacheCountries = countries.toList()
                     return@map cacheCountries
                 }
         } else {

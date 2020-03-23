@@ -36,6 +36,14 @@ class BreedAdapter(
         }
     }
 
+    fun updateBreed(breed: Breed) {
+        for((i, b) in breeds.withIndex()) {
+            if(b.id == breed.id) {
+                notifyItemChanged(i)
+            }
+        }
+    }
+
     fun setBreeds(breeds: List<Breed>) {
         this.breeds.clear()
         this.breeds.addAll(breeds)

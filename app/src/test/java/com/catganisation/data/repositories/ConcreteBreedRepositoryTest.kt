@@ -1,6 +1,7 @@
 package com.catganisation.data.repositories
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.catganisation.RxImmediateSchedulerRule
 import com.catganisation.data.models.Breed
 import com.catganisation.data.models.BreedImage
@@ -93,7 +94,7 @@ class ConcreteBreedRepositoryTest {
             Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", "1c.png")
         )
 
-        breedRepository.getBreeds().subscribe(testObserver)
+        breedRepository.getBreeds(HashSet(), MutableLiveData()).subscribe(testObserver)
         testObserver.assertValue(expected)
     }
 
@@ -102,7 +103,7 @@ class ConcreteBreedRepositoryTest {
         val testObserver: TestObserver<Breed> = TestObserver()
         val expected: Breed = Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png")
 
-        breedRepository.getBreeds()
+        breedRepository.getBreeds(HashSet(), MutableLiveData())
             .doOnNext{
             breedRepository.getBreedById("a").subscribe(testObserver)
             testObserver.assertValue(expected)

@@ -2,10 +2,7 @@ package com.catganisation.di.modules
 
 import com.catganisation.data.datasource.CountriesDataSource
 import com.catganisation.data.network.BreedApiService
-import com.catganisation.data.repositories.BreedRepository
-import com.catganisation.data.repositories.ConcreteBreedRepository
-import com.catganisation.data.repositories.ConcreteCountryRepository
-import com.catganisation.data.repositories.CountryRepository
+import com.catganisation.data.repositories.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -22,5 +19,11 @@ class RepositoryModule {
     @Singleton
     fun provideConcreteCountryRepository(countriesDataSource: CountriesDataSource) : CountryRepository {
         return ConcreteCountryRepository(countriesDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFiltersRepository() : FilterRepository {
+        return ConcreteFilterRepository()
     }
 }
