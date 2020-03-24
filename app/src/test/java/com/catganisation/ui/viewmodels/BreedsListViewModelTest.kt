@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.catganisation.RxImmediateSchedulerRule
+import com.catganisation.data.models.AuthResponse
 import com.catganisation.data.models.Breed
+import com.catganisation.data.repositories.AuthRepository
 import com.catganisation.data.repositories.BreedRepository
 import com.catganisation.data.repositories.FilterRepository
 import io.reactivex.Observable
@@ -34,6 +36,9 @@ class BreedsListViewModelTest {
     @Mock
     private lateinit var filterRepository: FilterRepository
 
+    @Mock
+    private lateinit var authRepository: AuthRepository
+
     private lateinit var breedsListViewModel: BreedsListViewModel
 
     private lateinit var isLoading: LiveData<Boolean>
@@ -52,6 +57,7 @@ class BreedsListViewModelTest {
         breedsListViewModel = BreedsListViewModel(
             breedsRepository,
             filterRepository,
+            authRepository,
             Schedulers.trampoline(),
             Schedulers.trampoline())
 

@@ -3,6 +3,7 @@ package com.catganisation.data.repositories
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.catganisation.RxImmediateSchedulerRule
 import com.catganisation.data.datasource.LoggedUserDataSource
+import com.catganisation.data.models.AuthResponse
 import com.catganisation.data.models.User
 import com.catganisation.data.network.AuthApiService
 import io.reactivex.Observable
@@ -49,11 +50,11 @@ class ConcreteAuthRepositoryTest {
         Mockito.`when`(authApiService.login("test", "catlord"))
             .thenReturn(Observable.just(User("test", "cat_lord_token")))
 
-        val testObserver: TestObserver<User> = TestObserver()
+        val testObserver: TestObserver<AuthResponse> = TestObserver()
         authRepository.login("test", "catlord").subscribe(testObserver)
 
         testObserver.assertValue {
-            it.email == "test" && it.userToken == "cat_lord_token"
+            it.success
         }
     }
 
@@ -66,7 +67,7 @@ class ConcreteAuthRepositoryTest {
             .thenReturn(Observable.error(Error("The username or password is incorrect")))
 
 
-        val testObserver: TestObserver<User> = TestObserver()
+        val testObserver: TestObserver<AuthResponse> = TestObserver()
         authRepository.login("test", "wrongpassword").subscribe(testObserver)
         testObserver.assertError(Error::class.java)
     }
