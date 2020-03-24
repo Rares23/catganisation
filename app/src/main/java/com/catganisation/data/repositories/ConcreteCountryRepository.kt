@@ -1,11 +1,8 @@
 package com.catganisation.data.repositories
 
-import androidx.lifecycle.Transformations.map
 import com.catganisation.data.models.Country
 import com.catganisation.data.datasource.CountriesDataSource
-import io.reactivex.Flowable.just
 import io.reactivex.Observable
-import io.reactivex.Observer
 import javax.inject.Inject
 
 class ConcreteCountryRepository @Inject constructor(

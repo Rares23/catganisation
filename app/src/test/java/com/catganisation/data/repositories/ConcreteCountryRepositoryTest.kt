@@ -57,6 +57,10 @@ class ConcreteCountryRepositoryTest {
 
     @Test
     fun `test get country by code method`() {
+        val testObserver: TestObserver<Country> = TestObserver()
+        val expected: Country = Country("RO", "Romania")
 
+        countryRepository.getCountryByCode("RO").subscribe(testObserver)
+        testObserver.assertValue(expected)
     }
 }
