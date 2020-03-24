@@ -1,6 +1,5 @@
 package com.catganisation.data.repositories
 
-import androidx.lifecycle.MutableLiveData
 import com.catganisation.data.models.Breed
 import com.catganisation.data.models.BreedImage
 import com.catganisation.data.models.CountriesFilter
@@ -8,21 +7,14 @@ import com.catganisation.data.models.Filter
 import com.catganisation.data.network.BreedApiService
 import com.catganisation.data.utils.FiltersTags
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.Single
-import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.delay
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ConcreteBreedRepository @Inject constructor(private val breedApiService: BreedApiService) : BreedRepository {
 
     private var cachedBreeds: List<Breed> = emptyList()
-    private var cachedImagesUrls: HashMap<String, String> = HashMap()
+    private var cachedImagesUrls: HashMap<String, BreedImage> = HashMap()
 
-    private lateinit var fetchBreedImagesSubscriber: Disposable
-
-    override fun getBreeds(filters: HashSet<Filter<*>>, breedItemNotify: MutableLiveData<Breed>): Observable<List<Breed>> {
+    override fun getBreeds(filters: HashSet<Filter<*>>): Observable<List<Breed>> {
         return fetchBreeds()
             .map {
                 return@map if(filters.isEmpty()) {
@@ -30,32 +22,6 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
                 } else {
                     getFilteredBreeds(filters, it)
                 }.sortedBy { breed -> breed.name }
-            }
-            .map {
-                it.forEach {breed ->
-                    if(breed.imageUrl.isNullOrEmpty()) {
-                        val cachedImageUrl: String? = cachedImagesUrls[breed.id]
-                        if(cachedImageUrl.isNullOrEmpty()) {
-                            fetchBreedImagesSubscriber = fetchBreedImages(breed.id)
-                                .doOnTerminate {
-                                }
-                                .subscribe { breedImages ->
-                                    if(!breedImages.isNullOrEmpty()) {
-                                        val breedImageUrl = breedImages[0].url
-                                        cachedImagesUrls[breed.id] = breedImageUrl
-                                        breed.imageUrl = breedImageUrl
-                                        breedItemNotify.postValue(breed)
-                                    }
-                                }
-                        }
-                        else {
-                            breed.imageUrl = cachedImageUrl
-                            breedItemNotify.postValue(breed)
-                        }
-                    }
-                }
-
-                return@map it
             }
     }
 
@@ -89,16 +55,7 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
                 }
         } else {
             Observable.just(cachedBreeds)
-                .mergeWith(breedApiService.fetchBreeds())
-                .map {
-                    cachedBreeds = it
-                    return@map cachedBreeds
-                }
         }
-    }
-
-    private fun fetchBreedImages(breedId: String): Observable<List<BreedImage>> {
-        return breedApiService.fetchBreedImages(breedId)
     }
 
     override fun getBreedById(breedId: String): Observable<Breed?> {
@@ -112,6 +69,25 @@ class ConcreteBreedRepository @Inject constructor(private val breedApiService: B
 
                 return@map null
             }
+    }
+
+    override fun getBreedImage(breedId: String): Observable<BreedImage> {
+        if(cachedImagesUrls.containsKey(breedId)) {
+            return Observable.just(cachedImagesUrls[breedId])
+        } else {
+            return fetchBreedImages(breedId)
+                .map { breedImages ->
+                    if (!breedImages.isNullOrEmpty()) {
+                        cachedImagesUrls[breedId] = breedImages[0]
+                    }
+
+                    return@map cachedImagesUrls[breedId]
+                }
+        }
+    }
+
+    private fun fetchBreedImages(breedId: String): Observable<List<BreedImage>> {
+        return breedApiService.fetchBreedImages(breedId)
     }
 }
 

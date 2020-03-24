@@ -8,6 +8,7 @@ import com.catganisation.data.models.Filter
 import io.reactivex.Observable
 
 interface BreedRepository {
-    fun getBreeds(filters: HashSet<Filter<*>>, breedItemNotify: MutableLiveData<Breed>) : Observable<List<Breed>>
+    fun getBreeds(filters: HashSet<Filter<*>>) : Observable<List<Breed>>
+    fun getBreedImage(breedId: String) : Observable<BreedImage>
     fun getBreedById(breedId: String) : Observable<Breed?>
 }

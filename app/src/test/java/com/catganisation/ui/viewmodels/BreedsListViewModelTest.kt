@@ -68,7 +68,7 @@ class BreedsListViewModelTest {
         Mockito.`when`(filterRepository.getActiveFilters())
             .thenReturn(Observable.just(HashSet()))
 
-        Mockito.`when`(breedsRepository.getBreeds(HashSet(), MutableLiveData()))
+        Mockito.`when`(breedsRepository.getBreeds(HashSet()))
             .thenReturn(Observable.just(seed))
 
         var isLoading = this.isLoading.value
@@ -78,7 +78,7 @@ class BreedsListViewModelTest {
         }
 
         breedsListViewModel.getBreeds()
-        verify(breedsRepository).getBreeds(HashSet(), MutableLiveData())
+        verify(breedsRepository).getBreeds(HashSet())
         isLoading = this.isLoading.value
         assertNotNull(isLoading)
         isLoading?.let {
@@ -91,7 +91,7 @@ class BreedsListViewModelTest {
         Mockito.`when`(filterRepository.getActiveFilters())
             .thenReturn(Observable.just(HashSet()))
 
-        Mockito.`when`(breedsRepository.getBreeds(HashSet(), MutableLiveData()))
+        Mockito.`when`(breedsRepository.getBreeds(HashSet()))
             .thenReturn(Observable.just(seed))
 
         val expected: List<Breed> = listOf(

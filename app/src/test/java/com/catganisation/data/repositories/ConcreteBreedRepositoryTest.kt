@@ -89,12 +89,12 @@ class ConcreteBreedRepositoryTest {
     fun `test get breeds list method with correct breed images`() {
         val testObserver: TestObserver<List<Breed>> = TestObserver()
         val expected: List<Breed> = listOf(
-            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png"),
-            Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", "1b.png"),
-            Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", "1c.png")
+            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", null),
+            Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", null),
+            Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", null)
         )
 
-        breedRepository.getBreeds(HashSet(), MutableLiveData()).subscribe(testObserver)
+        breedRepository.getBreeds(HashSet()).subscribe(testObserver)
         testObserver.assertValue(expected)
     }
 
@@ -103,7 +103,7 @@ class ConcreteBreedRepositoryTest {
         val testObserver: TestObserver<Breed> = TestObserver()
         val expected: Breed = Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png")
 
-        breedRepository.getBreeds(HashSet(), MutableLiveData())
+        breedRepository.getBreeds(HashSet())
             .doOnNext{
             breedRepository.getBreedById("a").subscribe(testObserver)
             testObserver.assertValue(expected)

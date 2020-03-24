@@ -12,15 +12,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.catganisation.R
 import com.catganisation.app.CatganisationApplication
+import com.catganisation.data.models.Breed
 import com.catganisation.di.components.DaggerAppComponent
 import com.catganisation.ui.adapters.BreedAdapter
+import com.catganisation.ui.listeners.OnBreedImageLoad
 import com.catganisation.ui.listeners.OnBreedItemSelect
 import com.catganisation.ui.viewmodels.BreedsListViewModel
 import kotlinx.android.synthetic.main.content_breeds_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
+class BreedsListActivity : AppCompatActivity(),
+    OnBreedItemSelect, OnBreedImageLoad {
 
     @Inject
     lateinit var breedsListViewModel: BreedsListViewModel
@@ -40,7 +43,7 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
     }
 
     private fun initBreedsList() {
-        breedListAdapter = BreedAdapter(this, this)
+        breedListAdapter = BreedAdapter(this, this, this)
         val layoutManager: LinearLayoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView_breedsList.layoutManager = layoutManager
@@ -98,7 +101,7 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
             }
         })
 
-        breedsListViewModel.breedItemNotifier.observe(this, Observer {
+        breedsListViewModel.notifyBreedItemUpdate.observe(this, Observer {
             breedListAdapter.updateBreed(it)
         })
 
@@ -120,5 +123,9 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
         val intent: Intent = Intent(this, BreedDetailsActivity::class.java)
         intent.putExtra("breedId", breedId)
         startActivity(intent)
+    }
+
+    override fun loadImage(breed: Breed) {
+        breedsListViewModel.getBreedImage(breed)
     }
 }

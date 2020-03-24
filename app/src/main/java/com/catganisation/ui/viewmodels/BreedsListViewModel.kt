@@ -1,7 +1,6 @@
 package com.catganisation.ui.viewmodels
 
 import androidx.lifecycle.MutableLiveData
-import com.catganisation.data.actions.NotifyAction
 import com.catganisation.data.models.Breed
 import com.catganisation.data.repositories.BreedRepository
 import com.catganisation.data.repositories.FilterRepository
@@ -15,10 +14,13 @@ class BreedsListViewModel @Inject constructor(
     private val ioScheduler: Scheduler,
     private val uiScheduler: Scheduler) : BaseViewModel() {
 
-    private lateinit var subscription: Disposable
+    private lateinit var loadBreedsSubscription: Disposable
+    private val loadBreedImageDisposables: HashMap<String, Disposable> = HashMap()
+
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val breedsList: MutableLiveData<List<Breed>> = MutableLiveData()
-    val breedItemNotifier: MutableLiveData<Breed> = MutableLiveData()
+
+    val notifyBreedItemUpdate: MutableLiveData<Breed> = MutableLiveData()
 
     init {
         loading.value = true
@@ -26,24 +28,35 @@ class BreedsListViewModel @Inject constructor(
     }
 
     fun getBreeds() {
-        subscription = filterRepository.getActiveFilters()
+        loadBreedsSubscription = filterRepository.getActiveFilters()
             .subscribeOn(ioScheduler)
             .observeOn(uiScheduler)
-            .subscribe {filters ->
-                breedRepository.getBreeds(filters, breedItemNotifier)
+            .flatMap { filters ->
+                breedRepository.getBreeds(filters)
                     .subscribeOn(ioScheduler)
                     .observeOn(uiScheduler)
-                    .doOnSubscribe {
-                        onFetchBreedsListStart()
-                    }
+                    .doOnSubscribe { onFetchBreedsListStart() }
                     .doOnTerminate {
                         onFetchBreedsListFinish()
                     }
-                    .subscribe(
-                        { onFetchBreedsListSuccess(it) },
-                        { onFetchBreedsListError(it) }
-                    )
+            }.subscribe(
+                { onFetchBreedsListSuccess(it) },
+                { onFetchBreedsListError(it) }
+            )
 
+    }
+
+    fun getBreedImage(breed: Breed) {
+        loadBreedImageDisposables[breed.id] = breedRepository.getBreedImage(breed.id)
+            .subscribeOn(ioScheduler)
+            .observeOn(uiScheduler)
+            .doOnTerminate {
+                loadBreedImageDisposables[breed.id]?.dispose()
+                loadBreedImageDisposables.remove(breed.id)
+            }
+            .subscribe {
+                breed.imageUrl = it.url
+                notifyBreedItemUpdate.value = breed
             }
     }
 
@@ -64,6 +77,6 @@ class BreedsListViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        subscription.dispose()
+        loadBreedsSubscription.dispose()
     }
 }
