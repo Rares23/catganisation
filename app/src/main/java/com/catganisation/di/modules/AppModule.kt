@@ -2,8 +2,10 @@ package com.catganisation.di.modules
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import com.catganisation.data.datasource.ConcreteCountriesDataSource
+import com.catganisation.data.datasource.ConcreteLoggedUserDataSource
 import com.catganisation.data.datasource.CountriesDataSource
 import com.catganisation.data.network.BreedApiService
 import dagger.Module
@@ -40,4 +42,12 @@ class AppModule {
     @Provides
     @Singleton
     fun provideConcreteCountriesDataSource() : CountriesDataSource = ConcreteCountriesDataSource()
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefs(context: Context) : SharedPreferences = context.getSharedPreferences("catsharedprefs", Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideConcreteLoggedUserDataSource(sharedPrefs: SharedPreferences) : ConcreteLoggedUserDataSource = ConcreteLoggedUserDataSource(sharedPrefs)
 }
