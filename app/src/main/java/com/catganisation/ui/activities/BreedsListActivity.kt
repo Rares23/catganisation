@@ -68,7 +68,7 @@ class BreedsListActivity : AppCompatActivity(),
                 it.icon?.let {drawable ->
                     DrawableCompat.setTint(drawable, ResourcesCompat.getColor(resources, R.color.colorWhite, null));
                 }
-                
+
                 it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
             }
         }

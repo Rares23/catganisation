@@ -104,7 +104,9 @@ class FiltersViewModel @Inject constructor(
             }
         }
 
-        filters.add(CountriesFilter(selectedCountries))
+        if(selectedCountries.isNotEmpty()) {
+            filters.add(CountriesFilter(selectedCountries))
+        }
     }
 
     fun resetFilters() {
