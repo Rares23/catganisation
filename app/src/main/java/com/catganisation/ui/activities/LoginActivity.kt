@@ -56,13 +56,14 @@ class LoginActivity : AppCompatActivity() {
             textInputLayout_email.error = null
             textInputLayout_password.error = null
 
-            if(it.success) {
-                loginViewModel.clearData()
-                
+            if(it?.success == true) {
+                loginViewModel.authResponse.removeObservers(this)
+                loginViewModel.authResponse.postValue(null)
+
                 setResult(Activity.RESULT_OK)
                 finish()
             } else {
-                it.validations?.keys?.forEach { key ->
+                it?.validations?.keys?.forEach { key ->
                     when(key) {
                         AuthConstants.USER_EMAIL -> textInputLayout_email.error = it.validations[AuthConstants.USER_EMAIL]
                         AuthConstants.USER_PASSWORD -> textInputLayout_password.error = it.validations[AuthConstants.USER_PASSWORD]

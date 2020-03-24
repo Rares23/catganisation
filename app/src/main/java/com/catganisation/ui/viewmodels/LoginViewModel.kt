@@ -16,20 +16,14 @@ class LoginViewModel @Inject constructor(
 
     private lateinit var loginDisposable: Disposable
 
-    val authResponse: MutableLiveData<AuthResponse> = MutableLiveData()
+    val authResponse: MutableLiveData<AuthResponse?> = MutableLiveData()
 
     fun login(email: String, password: String) {
         loginDisposable = authRepository.login(email, password)
             .subscribeOn(ioScheduler)
             .observeOn(uiScheduler)
-            .doOnSubscribe {
-
-            }
-            .doOnTerminate {
-
-            }
             .subscribe (
-                {authResponse.value = it},
+                { authResponse.postValue(it) },
                 {
                     val validations: HashMap<String, String> = HashMap()
                     validations["error"] = it.message.toString()
@@ -40,11 +34,8 @@ class LoginViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        loginDisposable.dispose()
-        authResponse.value = null
-    }
-
-    fun clearData() {
-        authResponse.value = null
+        if(!loginDisposable.isDisposed) {
+            loginDisposable.dispose()
+        }
     }
 }

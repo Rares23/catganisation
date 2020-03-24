@@ -88,8 +88,7 @@ class BreedsListActivity : AppCompatActivity(),
             }
 
             android.R.id.home -> {
-                //TODO open login or profile page
-                openLogin()
+                onProfileMenuItemClick()
                 return true
             }
 
@@ -97,9 +96,22 @@ class BreedsListActivity : AppCompatActivity(),
         }
     }
 
+    private fun onProfileMenuItemClick() {
+        if(breedsListViewModel.isLogged.value == true) {
+            openProfile()
+        } else {
+            openLogin()
+        }
+    }
+
     private fun openLogin() {
         val intent: Intent = Intent(this, LoginActivity::class.java)
         startActivityForResult(intent, ActivityRequestCodes.LOGIN_REQUEST_CODE)
+    }
+
+    private fun openProfile() {
+        val intent: Intent = Intent(this, ProfileActivity::class.java)
+        startActivityForResult(intent, ActivityRequestCodes.PROFILE_REQUEST_CODE)
     }
 
     private fun openFilters() {
@@ -114,9 +126,14 @@ class BreedsListActivity : AppCompatActivity(),
                     breedsListViewModel.getBreeds()
                 }
             }
+            ActivityRequestCodes.PROFILE_REQUEST_CODE,
+            ActivityRequestCodes.LOGIN_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    breedsListViewModel.checkLoggedUser()
+                }
+            }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     private fun initializeViewModel() {
@@ -147,6 +164,7 @@ class BreedsListActivity : AppCompatActivity(),
             }
         })
 
+        breedsListViewModel.checkLoggedUser()
         breedsListViewModel.getBreeds()
     }
 

@@ -21,5 +21,6 @@
         <activity android:name=".ui.activities.BreedDetailsActivity" />
         <activity android:name=".ui.activities.FiltersActivity" />
         <activity android:name=".ui.activities.LoginActivity" />
+        <activity android:name=".ui.activities.ProfileActivity" />
     </application>
 </manifest>

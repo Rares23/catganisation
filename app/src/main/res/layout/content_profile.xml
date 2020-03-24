@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ImageView
+        android:id="@+id/imageView_profileIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_account_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/colorDarkGray"
+        android:layout_marginTop="@dimen/verticalDoubleMargin"/>
+
+    <TextView
+        android:id="@+id/textView_userEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextViewUserEmailLabel"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_profileIcon"
+        app:layout_constraintStart_toStartOf="@+id/imageView_profileIcon"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_profileIcon"
+        android:layout_marginTop="@dimen/verticalHalfMargin"
+        tools:text="catlord@gmail.com" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="@dimen/verticalDoubleMargin"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

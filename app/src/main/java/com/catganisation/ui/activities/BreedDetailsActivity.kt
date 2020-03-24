@@ -45,6 +45,8 @@ class BreedDetailsActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.breed_details_load_error), Toast.LENGTH_SHORT).show()
                 onBackPressed()
             }
+
+            breedDetailsViewModel.breed.removeObservers(this)
         })
 
         breedDetailsViewModel.loadBreed(intent.getStringExtra("breedId"))

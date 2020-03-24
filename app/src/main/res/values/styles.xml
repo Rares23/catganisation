@@ -157,4 +157,9 @@
         <item name="android:paddingEnd">@dimen/horizontalDoubleMargin</item>
     </style>
 
+    <style name="TextViewUserEmailLabel" parent="AppTheme">
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+    </style>
+
 </resources>

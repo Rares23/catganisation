@@ -6,6 +6,7 @@ import com.catganisation.data.models.User
 import com.catganisation.data.network.AuthApiService
 import com.catganisation.data.utils.AuthConstants
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import javax.inject.Inject
 
 class ConcreteAuthRepository @Inject constructor(
@@ -14,7 +15,7 @@ class ConcreteAuthRepository @Inject constructor(
 ) : AuthRepository {
     override fun login(email: String, password: String): Observable<AuthResponse> {
         return Observable.just("")
-            .map {
+            .flatMap {
                 var success: Boolean = true
                 val validation: HashMap<String, String> = HashMap()
                 if(email.isEmpty()) {
@@ -27,20 +28,16 @@ class ConcreteAuthRepository @Inject constructor(
                     validation[AuthConstants.USER_PASSWORD] = "Please fill you password"
                 }
 
-                return@map AuthResponse(success, validation)
-            }.map {
-                return@map if(it.success) {
-                    val user = authApiService.login(email, password).blockingFirst()
-                    if(user != null) {
-                        loggedUserDataSource.saveLoggedUser(user)
-                        AuthResponse(true, null)
-                    } else {
-                        val validation: HashMap<String, String> = HashMap()
-                        validation["error"] = "Something went wrong"
-                        AuthResponse(false, validation)
+                return@flatMap Observable.just(AuthResponse(success, validation))
+            }.flatMap {response ->
+                if(response.success) {
+                    return@flatMap authApiService.login(email, password).flatMap {user ->
+                        loggedUserDataSource.saveLoggedUser(user).flatMap {
+                            Observable.just(AuthResponse(it, null))
+                        }
                     }
                 } else {
-                    it
+                    return@flatMap Observable.just(response)
                 }
             }
     }
