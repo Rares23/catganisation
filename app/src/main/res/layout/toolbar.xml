@@ -9,5 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/Toolbar"
+        app:menu="@menu/menu_breeds_list"
         style="@style/Toolbar"/>
 </com.google.android.material.appbar.AppBarLayout>

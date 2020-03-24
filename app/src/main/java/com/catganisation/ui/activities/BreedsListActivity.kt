@@ -2,12 +2,18 @@ package com.catganisation.ui.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.catganisation.R
@@ -57,6 +63,15 @@ class BreedsListActivity : AppCompatActivity(),
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         MenuInflater(this).inflate(R.menu.menu_breeds_list, menu)
+        menu?.children?.forEach {
+            if(it.itemId == R.id.menuItem_filters) {
+                it.icon?.let {drawable ->
+                    DrawableCompat.setTint(drawable, ResourcesCompat.getColor(resources, R.color.colorWhite, null));
+                }
+                
+                it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            }
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
