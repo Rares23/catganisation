@@ -147,4 +147,14 @@
         <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
     </style>
 
+    <style name="ButtonLogin" parent="AppTheme">
+        <item name="android:textSize">@dimen/buttonTextSize</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:paddingStart">@dimen/horizontalDoubleMargin</item>
+        <item name="android:paddingEnd">@dimen/horizontalDoubleMargin</item>
+    </style>
+
 </resources>

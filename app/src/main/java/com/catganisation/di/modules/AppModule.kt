@@ -4,10 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import com.catganisation.app.CatganisationApplication
 import com.catganisation.data.datasource.ConcreteCountriesDataSource
 import com.catganisation.data.datasource.ConcreteLoggedUserDataSource
 import com.catganisation.data.datasource.CountriesDataSource
+import com.catganisation.data.datasource.LoggedUserDataSource
+import com.catganisation.data.network.AuthApiService
 import com.catganisation.data.network.BreedApiService
+import com.catganisation.data.network.FakeAuthApiService
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -32,6 +36,9 @@ class AppModule {
             .create(BreedApiService::class.java)
 
     @Provides
+    fun provideApplication() : Application = CatganisationApplication.app
+
+    @Provides
     @Singleton
     fun provideContext(application: Application) : Context = application.applicationContext
 
@@ -41,13 +48,17 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideConcreteCountriesDataSource() : CountriesDataSource = ConcreteCountriesDataSource()
-
-    @Provides
-    @Singleton
     fun provideSharedPrefs(context: Context) : SharedPreferences = context.getSharedPreferences("catsharedprefs", Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    fun provideConcreteLoggedUserDataSource(sharedPrefs: SharedPreferences) : ConcreteLoggedUserDataSource = ConcreteLoggedUserDataSource(sharedPrefs)
+    fun provideConcreteCountriesDataSource() : CountriesDataSource = ConcreteCountriesDataSource()
+
+    @Provides
+    @Singleton
+    fun provideConcreteLoggedUserDataSource(sharedPrefs: SharedPreferences) : LoggedUserDataSource = ConcreteLoggedUserDataSource(sharedPrefs)
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService() : AuthApiService = FakeAuthApiService()
 }

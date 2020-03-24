@@ -1,6 +1,5 @@
 package com.catganisation.data.datasource
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.catganisation.RxImmediateSchedulerRule
@@ -11,8 +10,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -45,10 +42,10 @@ class ConcreteLoggedUserDataSourceTest {
 
     @Test
     fun `test get logged user data if not logged`() {
-        Mockito.`when`(sharedPreferences.getString(AuthConstants.LOGGED_USER_EMAIL, null))
+        Mockito.`when`(sharedPreferences.getString(AuthConstants.USER_EMAIL, null))
             .thenReturn(null)
 
-        Mockito.`when`(sharedPreferences.getString(AuthConstants.LOGGED_USER_TOKEN, null))
+        Mockito.`when`(sharedPreferences.getString(AuthConstants.USER_TOKEN, null))
             .thenReturn(null)
 
         val testObserver: TestObserver<User?> = TestObserver()
@@ -61,10 +58,10 @@ class ConcreteLoggedUserDataSourceTest {
 
     @Test
     fun `test get logged user when there is data`() {
-        Mockito.`when`(sharedPreferences.getString(AuthConstants.LOGGED_USER_EMAIL, null))
+        Mockito.`when`(sharedPreferences.getString(AuthConstants.USER_EMAIL, null))
             .thenReturn("test")
 
-        Mockito.`when`(sharedPreferences.getString(AuthConstants.LOGGED_USER_TOKEN, null))
+        Mockito.`when`(sharedPreferences.getString(AuthConstants.USER_TOKEN, null))
             .thenReturn("asd")
 
         val testObserver: TestObserver<User?> = TestObserver()
@@ -79,16 +76,16 @@ class ConcreteLoggedUserDataSourceTest {
 
     @Test
     fun saveLoggedUser() {
-        Mockito.`when`(editor.putString(AuthConstants.LOGGED_USER_EMAIL, "test"))
+        Mockito.`when`(editor.putString(AuthConstants.USER_EMAIL, "test"))
             .thenReturn(editor)
 
-        Mockito.`when`(editor.putString(AuthConstants.LOGGED_USER_TOKEN, "asd"))
+        Mockito.`when`(editor.putString(AuthConstants.USER_TOKEN, "asd"))
             .thenReturn(editor)
 
-        Mockito.`when`(sharedPreferences.edit().putString(AuthConstants.LOGGED_USER_EMAIL, "test").commit())
+        Mockito.`when`(sharedPreferences.edit().putString(AuthConstants.USER_EMAIL, "test").commit())
             .thenReturn(true)
 
-        Mockito.`when`(sharedPreferences.edit().putString(AuthConstants.LOGGED_USER_TOKEN, "asd").commit())
+        Mockito.`when`(sharedPreferences.edit().putString(AuthConstants.USER_TOKEN, "asd").commit())
             .thenReturn(true)
 
         val testObserver: TestObserver<Boolean> = TestObserver()
@@ -99,16 +96,16 @@ class ConcreteLoggedUserDataSourceTest {
 
     @Test
     fun resetLoggedUser() {
-        Mockito.`when`(editor.remove(AuthConstants.LOGGED_USER_EMAIL))
+        Mockito.`when`(editor.remove(AuthConstants.USER_EMAIL))
             .thenReturn(editor)
 
-        Mockito.`when`(editor.remove(AuthConstants.LOGGED_USER_TOKEN))
+        Mockito.`when`(editor.remove(AuthConstants.USER_TOKEN))
             .thenReturn(editor)
 
-        Mockito.`when`(editor.remove(AuthConstants.LOGGED_USER_EMAIL).commit())
+        Mockito.`when`(editor.remove(AuthConstants.USER_EMAIL).commit())
             .thenReturn(true)
 
-        Mockito.`when`(editor.remove(AuthConstants.LOGGED_USER_TOKEN).commit())
+        Mockito.`when`(editor.remove(AuthConstants.USER_TOKEN).commit())
             .thenReturn(true)
 
         val testObserver: TestObserver<Boolean> = TestObserver()
