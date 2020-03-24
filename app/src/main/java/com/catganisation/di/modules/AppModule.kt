@@ -3,6 +3,8 @@ package com.catganisation.di.modules
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
+import com.catganisation.data.datasource.ConcreteCountriesDataSource
+import com.catganisation.data.datasource.CountriesDataSource
 import com.catganisation.data.network.BreedApiService
 import dagger.Module
 import dagger.Provides
@@ -34,4 +36,8 @@ class AppModule {
     @Provides
     @Singleton
     fun providesResources(application: Application): Resources = application.resources
+
+    @Provides
+    @Singleton
+    fun provideConcreteCountriesDataSource() : CountriesDataSource = ConcreteCountriesDataSource()
 }

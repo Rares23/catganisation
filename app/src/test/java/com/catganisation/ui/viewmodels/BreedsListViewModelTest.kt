@@ -2,9 +2,11 @@ package com.catganisation.ui.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.catganisation.RxImmediateSchedulerRule
 import com.catganisation.data.models.Breed
 import com.catganisation.data.repositories.BreedRepository
+import com.catganisation.data.repositories.FilterRepository
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import junit.framework.TestCase.*
@@ -29,6 +31,9 @@ class BreedsListViewModelTest {
 
     @Mock
     private lateinit var breedsRepository: BreedRepository
+    @Mock
+    private lateinit var filterRepository: FilterRepository
+
     private lateinit var breedsListViewModel: BreedsListViewModel
 
     private lateinit var isLoading: LiveData<Boolean>
@@ -44,7 +49,9 @@ class BreedsListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        breedsListViewModel = BreedsListViewModel(breedsRepository,
+        breedsListViewModel = BreedsListViewModel(
+            breedsRepository,
+            filterRepository,
             Schedulers.trampoline(),
             Schedulers.trampoline())
 
@@ -58,7 +65,10 @@ class BreedsListViewModelTest {
 
     @Test
     fun `test loading state before and after getBreeds method call`() {
-        Mockito.`when`(breedsRepository.getBreeds())
+        Mockito.`when`(filterRepository.getActiveFilters())
+            .thenReturn(Observable.just(HashSet()))
+
+        Mockito.`when`(breedsRepository.getBreeds(HashSet()))
             .thenReturn(Observable.just(seed))
 
         var isLoading = this.isLoading.value
@@ -68,7 +78,7 @@ class BreedsListViewModelTest {
         }
 
         breedsListViewModel.getBreeds()
-        verify(breedsRepository).getBreeds()
+        verify(breedsRepository).getBreeds(HashSet())
         isLoading = this.isLoading.value
         assertNotNull(isLoading)
         isLoading?.let {
@@ -78,7 +88,10 @@ class BreedsListViewModelTest {
 
     @Test
     fun `test return breeds lists after getBreeds method call`() {
-        Mockito.`when`(breedsRepository.getBreeds())
+        Mockito.`when`(filterRepository.getActiveFilters())
+            .thenReturn(Observable.just(HashSet()))
+
+        Mockito.`when`(breedsRepository.getBreeds(HashSet()))
             .thenReturn(Observable.just(seed))
 
         val expected: List<Breed> = listOf(

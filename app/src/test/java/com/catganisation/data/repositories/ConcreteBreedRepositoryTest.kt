@@ -1,9 +1,9 @@
 package com.catganisation.data.repositories
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.catganisation.RxImmediateSchedulerRule
-import com.catganisation.data.models.Breed
-import com.catganisation.data.models.BreedImage
+import com.catganisation.data.models.*
 import com.catganisation.data.network.BreedApiService
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -88,24 +88,38 @@ class ConcreteBreedRepositoryTest {
     fun `test get breeds list method with correct breed images`() {
         val testObserver: TestObserver<List<Breed>> = TestObserver()
         val expected: List<Breed> = listOf(
-            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png"),
-            Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", "1b.png"),
-            Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", "1c.png")
+            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", null),
+            Breed("b", "Bxi", "xyz", "EN", "x", "wiki.com", null),
+            Breed("c", "Cxi", "dfe", "FR", "y", "wiki.com", null)
         )
 
-        breedRepository.getBreeds().subscribe(testObserver)
+        breedRepository.getBreeds(HashSet()).subscribe(testObserver)
         testObserver.assertValue(expected)
     }
 
     @Test
     fun `test get breed by id method`() {
         val testObserver: TestObserver<Breed> = TestObserver()
-        val expected: Breed = Breed("a", "Axi", "abc", "RO", "x", "wiki.com", "1a.png")
+        val expected: Breed = Breed("a", "Axi", "abc", "RO", "x", "wiki.com", null)
 
-        breedRepository.getBreeds()
+        breedRepository.getBreeds(HashSet())
             .doOnNext{
             breedRepository.getBreedById("a").subscribe(testObserver)
             testObserver.assertValue(expected)
         }
+    }
+
+    @Test
+    fun `test get breeds with country filter active`() {
+        val testObserver: TestObserver<List<Breed>> = TestObserver()
+        val expected: List<Breed> = listOf(
+            Breed("a", "Axi", "abc", "RO", "x", "wiki.com", null)
+        )
+
+        val filters: HashSet<Filter<*>> = HashSet()
+        filters.add(CountriesFilter(hashSetOf(Country("RO", "Romania"))))
+
+        breedRepository.getBreeds(filters).subscribe(testObserver)
+        testObserver.assertValue(expected)
     }
 }

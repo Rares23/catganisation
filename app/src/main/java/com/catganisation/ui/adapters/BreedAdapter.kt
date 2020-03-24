@@ -5,12 +5,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.catganisation.data.models.Breed
+import com.catganisation.ui.listeners.OnBreedImageLoad
 import com.catganisation.ui.listeners.OnBreedItemSelect
 import com.catganisation.ui.views.BreedItemView
 
 class BreedAdapter(
     private val context: Context,
-    private val onBreedItemSelect: OnBreedItemSelect) : RecyclerView.Adapter<BreedAdapter.BreedViewHolder>() {
+    private val onBreedItemSelect: OnBreedItemSelect,
+    private val onBreedImageLoad: OnBreedImageLoad
+) : RecyclerView.Adapter<BreedAdapter.BreedViewHolder>() {
 
     private val breeds: ArrayList<Breed> = ArrayList()
 
@@ -31,8 +34,19 @@ class BreedAdapter(
 
     override fun onBindViewHolder(holder: BreedViewHolder, position: Int) {
         holder.view.setContent(breeds[position])
+        if(breeds[position].imageUrl == null) {
+            onBreedImageLoad.loadImage(breeds[position])
+        }
         holder.view.setOnClickListener {
             onBreedItemSelect.selectBreed(breeds[holder.adapterPosition].id)
+        }
+    }
+
+    fun updateBreed(breed: Breed) {
+        for((i, b) in breeds.withIndex()) {
+            if(b.id == breed.id) {
+                notifyItemChanged(i)
+            }
         }
     }
 

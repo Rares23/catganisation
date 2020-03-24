@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Catganisation</string>
     <string name="details_page_title">Details</string>
-    <string name="no_breeds">There are no breeds to show right now! Try again later</string>
+    <string name="filters_page_title">Filters</string>
+    <string name="no_breeds">No breeds to show!</string>
     <string name="wiki_link">Wiki Link</string>
+    <!--  actions  -->
+    <string name="action_filters">Filters</string>
     <!--  error messages  -->
     <string name="breed_details_load_error">The breed could not be loaded! Please try again later!</string>
 </resources>

@@ -1,22 +1,35 @@
 package com.catganisation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.catganisation.R
 import com.catganisation.app.CatganisationApplication
+import com.catganisation.data.models.Breed
 import com.catganisation.di.components.DaggerAppComponent
 import com.catganisation.ui.adapters.BreedAdapter
+import com.catganisation.ui.listeners.OnBreedImageLoad
 import com.catganisation.ui.listeners.OnBreedItemSelect
 import com.catganisation.ui.viewmodels.BreedsListViewModel
 import kotlinx.android.synthetic.main.content_breeds_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
+class BreedsListActivity : AppCompatActivity(),
+    OnBreedItemSelect, OnBreedImageLoad {
 
     @Inject
     lateinit var breedsListViewModel: BreedsListViewModel
@@ -36,7 +49,7 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
     }
 
     private fun initBreedsList() {
-        breedListAdapter = BreedAdapter(this, this)
+        breedListAdapter = BreedAdapter(this, this, this)
         val layoutManager: LinearLayoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView_breedsList.layoutManager = layoutManager
@@ -45,6 +58,49 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
 
     private fun initToolbar() {
         toolbar.title = getString(R.string.app_name)
+        setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        MenuInflater(this).inflate(R.menu.menu_breeds_list, menu)
+        menu?.children?.forEach {
+            if(it.itemId == R.id.menuItem_filters) {
+                it.icon?.let {drawable ->
+                    DrawableCompat.setTint(drawable, ResourcesCompat.getColor(resources, R.color.colorWhite, null));
+                }
+
+                it.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menuItem_filters -> {
+                openFilters()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openFilters() {
+        val intent = Intent(this, FiltersActivity::class.java)
+        startActivityForResult(intent, ActivityRequestCodes.FILTERS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            ActivityRequestCodes.FILTERS_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    breedsListViewModel.getBreeds()
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+
     }
 
     private fun initializeViewModel() {
@@ -58,6 +114,10 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
             } else {
                 textView_noBreeds.visibility = View.GONE
             }
+        })
+
+        breedsListViewModel.notifyBreedItemUpdate.observe(this, Observer {
+            breedListAdapter.updateBreed(it)
         })
 
         breedsListViewModel.loading.observe(this, Observer {loading ->
@@ -78,5 +138,9 @@ class BreedsListActivity : AppCompatActivity(), OnBreedItemSelect {
         val intent: Intent = Intent(this, BreedDetailsActivity::class.java)
         intent.putExtra("breedId", breedId)
         startActivity(intent)
+    }
+
+    override fun loadImage(breed: Breed) {
+        breedsListViewModel.getBreedImage(breed)
     }
 }

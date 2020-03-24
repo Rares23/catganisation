@@ -19,5 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.BreedDetailsActivity" />
+        <activity android:name=".ui.activities.FiltersActivity" />
     </application>
 </manifest>

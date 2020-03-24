@@ -6,12 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
+    </style>
+
+    <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Toolbar" parent="AppTheme">
         <item name="titleTextColor">@color/colorWhite</item>
         <item name="iconTint">@color/colorWhite</item>
         <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
     
     <style name="CardViewBreed" parent="AppTheme">
@@ -105,6 +112,39 @@
 
     <style name="CollapsedTitleText" parent="AppTheme">
         <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="FabSaveFilters" parent="AppTheme">
+        <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="tint">@color/colorWhite</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:src">@drawable/ic_check</item>
+    </style>
+
+    <style name="FabResetFilters" parent="AppTheme">
+        <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="tint">@color/colorWhite</item>
+        <item name="backgroundTint">@color/colorRed</item>
+        <item name="android:src">@drawable/ic_reset</item>
+    </style>
+
+    <style name="TextViewCountryLabel" parent="AppTheme">
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginTop">@dimen/verticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
+    </style>
+
+    <style name="ImageViewCountrySelectedIcon" parent="AppTheme">
+        <item name="android:src">@drawable/ic_check</item>
+        <item name="android:tint">@color/colorPrimary</item>
+        <item name="android:layout_marginStart">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontalMargin</item>
+        <item name="android:layout_marginTop">@dimen/verticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/verticalMargin</item>
     </style>
 
 </resources>
