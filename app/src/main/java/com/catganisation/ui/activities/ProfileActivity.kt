@@ -59,7 +59,7 @@ class ProfileActivity : AppCompatActivity() {
 
         profileViewModel.actionLogout.observe(this, Observer {
             if(it == true) {
-                profileViewModel.actionLogout.removeObservers(this)
+                profileViewModel.actionLogout.value = null
 
                 setResult(Activity.RESULT_OK)
                 finish()

@@ -80,8 +80,7 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
 
         filtersViewModel.submitNotify.observe(this, Observer {
             if(it == true) {
-                filtersViewModel.submitNotify.removeObservers(this)
-                filtersViewModel.countryNotifyAction.removeObservers(this)
+                filtersViewModel.submitNotify.value = null
 
                 setResult(Activity.RESULT_OK)
                 finish()

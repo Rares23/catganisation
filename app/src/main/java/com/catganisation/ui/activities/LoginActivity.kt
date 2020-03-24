@@ -57,8 +57,7 @@ class LoginActivity : AppCompatActivity() {
             textInputLayout_password.error = null
 
             if(it?.success == true) {
-                loginViewModel.authResponse.removeObservers(this)
-                loginViewModel.authResponse.postValue(null)
+                loginViewModel.authResponse.value = null
 
                 setResult(Activity.RESULT_OK)
                 finish()
