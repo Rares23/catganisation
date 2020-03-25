@@ -12,7 +12,9 @@ import com.catganisation.data.utils.FiltersTags
 import com.catganisation.data.utils.Selectable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashSet
 
 class FiltersViewModel @Inject constructor(
     private val countryRepository: CountryRepository,
@@ -32,7 +34,9 @@ class FiltersViewModel @Inject constructor(
     val countryNotifyAction: MutableLiveData<StringNotifyAction?> = MutableLiveData()
     val submitNotify: MutableLiveData<Boolean?> = MutableLiveData()
 
-    fun loadFiltersData() {
+    private val tmpSelectedCountries: HashSet<String> = HashSet()
+
+    fun loadFiltersData(searchQ: String? = null) {
         loadCountriesSubscription = countryRepository.getAllCountries()
             .subscribeOn(ioScheduler)
             .observeOn(uiScheduler)
@@ -42,7 +46,14 @@ class FiltersViewModel @Inject constructor(
             .subscribe{ countries ->
                 this.countriesList.clear()
                 countries.forEach {
-                    this.countriesList.add(Selectable(it.clone() as Country, false))
+                    if(searchQ.isNullOrEmpty()) {
+                        this.countriesList.add(Selectable(it.clone() as Country,
+                            tmpSelectedCountries.contains(it.code)))
+                    } else {
+                        if (it.toString().toLowerCase().contains(searchQ.toLowerCase())) {
+                            this.countriesList.add(Selectable(it.clone() as Country, tmpSelectedCountries.contains(it.code)))
+                        }
+                    }
                 }
             }
     }
@@ -67,7 +78,7 @@ class FiltersViewModel @Inject constructor(
     private fun setCountriesSelectStateFromFilters(filter: CountriesFilter) {
         filter.value.forEach {selectedCountry ->
             countriesList.forEach { country ->
-                if(country.value.code == selectedCountry.code) {
+                if(country.value.code == selectedCountry.code || tmpSelectedCountries.contains(country.value.code)) {
                     country.selected = true
                 }
             }
@@ -80,9 +91,17 @@ class FiltersViewModel @Inject constructor(
             NotifyAction.Action.UPDATE,
             country.value.code
         ))
+
+        if(country.selected) {
+            tmpSelectedCountries.add(country.value.code)
+        } else {
+            tmpSelectedCountries.remove(country.value.code)
+        }
     }
 
     fun saveFilters() {
+        resetTmpSelectedCountries()
+
         val newFilters: HashSet<Filter<*>> = HashSet()
 
         setFiltersData(newFilters)
@@ -110,12 +129,18 @@ class FiltersViewModel @Inject constructor(
     }
 
     fun resetFilters() {
+        resetTmpSelectedCountries()
+
         resetFilters = filterRepository.updateFilters(HashSet())
             .subscribeOn(ioScheduler)
             .observeOn(uiScheduler)
             .subscribe {
                 submitNotify.value = true
             }
+    }
+
+    fun resetTmpSelectedCountries() {
+        tmpSelectedCountries.clear()
     }
 
     override fun onCleared() {

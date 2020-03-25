@@ -12,6 +12,7 @@
     <!--  hints  -->
     <string name="email_hint">Your email</string>
     <string name="password_hint">Your password</string>
+    <string name="search_country_hint">Search country</string>
     <!--  actions  -->
     <string name="action_filters">Filters</string>
     <string name="action_login">Login</string>

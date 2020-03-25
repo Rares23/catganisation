@@ -172,4 +172,14 @@
         <item name="android:paddingEnd">@dimen/horizontalDoubleMargin</item>
     </style>
 
+    <style name="EditTextSearchCountry" parent="AppTheme">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorHighlight">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:tint">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhite</item>
+        <item name="backgroundTint">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/mediumTextSize</item>
+    </style>
 </resources>

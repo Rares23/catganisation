@@ -2,8 +2,11 @@ package com.catganisation.ui.activities
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,7 @@ import com.catganisation.ui.listeners.OnCountryItemSelect
 import com.catganisation.ui.viewmodels.FiltersViewModel
 import kotlinx.android.synthetic.main.content_filters.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
+import kotlinx.android.synthetic.main.toolbar_filters.*
 import javax.inject.Inject
 
 class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
@@ -37,6 +41,7 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
         initToolbar()
         initCountriesList()
         initButtons()
+        initSearchCountryListener()
     }
 
     private fun initButtons() {
@@ -47,6 +52,16 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
         fab_saveFilters.setOnClickListener {
             filtersViewModel.saveFilters()
         }
+    }
+
+    private fun initSearchCountryListener() {
+        editText_searchCountry.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filtersViewModel.loadFiltersData(s.toString())
+            }
+        })
     }
 
     private fun initCountriesList() {
@@ -87,7 +102,7 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
             }
         })
 
-        filtersViewModel.loadFiltersData()
+        filtersViewModel.loadFiltersData(editText_searchCountry.text.toString())
     }
 
     private fun updateActionButtons(selectedCountries: Int) {
@@ -116,6 +131,11 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        filtersViewModel.resetTmpSelectedCountries()
+        super.onBackPressed()
     }
 
     override fun onCountrySelect(country: Selectable<Country>) {
