@@ -105,16 +105,6 @@ class FiltersActivity : AppCompatActivity(), OnCountryItemSelect {
         filtersViewModel.loadFiltersData(editText_searchCountry.text.toString())
     }
 
-    private fun updateActionButtons(selectedCountries: Int) {
-        if(selectedCountries > 0) {
-            fab_resetFilters.show()
-            fab_saveFilters.show()
-        } else {
-            fab_resetFilters.hide()
-            fab_saveFilters.hide()
-        }
-    }
-
     private fun initToolbar() {
         toolbar.title = getString(R.string.filters_page_title)
         setSupportActionBar(toolbar)
