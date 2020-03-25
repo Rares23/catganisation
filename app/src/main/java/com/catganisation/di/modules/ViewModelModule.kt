@@ -32,9 +32,10 @@ class ViewModelModule {
     @Provides
     @Singleton
     fun provideBreedDetailsViewModel(breedsRepository: BreedRepository,
+                                     countriesRepository: CountryRepository,
                                      @Named(SchedulerModule.IO_SCHEDULER) ioScheduler: Scheduler,
                                      @Named(SchedulerModule.UI_SCHEDULER) uiScheduler: Scheduler) : BreedDetailsViewModel {
-        return BreedDetailsViewModel(breedsRepository, ioScheduler, uiScheduler)
+        return BreedDetailsViewModel(breedsRepository, countriesRepository, ioScheduler, uiScheduler)
     }
 
     @Provides
