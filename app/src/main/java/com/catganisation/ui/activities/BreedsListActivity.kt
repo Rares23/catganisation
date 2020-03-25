@@ -99,7 +99,7 @@ class BreedsListActivity : AppCompatActivity(),
     private fun onProfileMenuItemClick() {
         if(breedsListViewModel.isLogged.value == true) {
             openProfile()
-        } else {
+        } else if (breedsListViewModel.isLogged.value == false) {
             openLogin()
         }
     }

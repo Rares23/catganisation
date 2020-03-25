@@ -59,6 +59,8 @@ class LoginActivity : AppCompatActivity() {
             if(it?.success == true) {
                 loginViewModel.authResponse.value = null
 
+                Toast.makeText(this, getString(R.string.logged_successfully), Toast.LENGTH_LONG).show()
+
                 setResult(Activity.RESULT_OK)
                 finish()
             } else {

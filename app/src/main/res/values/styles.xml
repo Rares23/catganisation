@@ -158,8 +158,18 @@
     </style>
 
     <style name="TextViewUserEmailLabel" parent="AppTheme">
-        <item name="android:textSize">@dimen/mediumTextSize</item>
+        <item name="android:textSize">@dimen/bigTextSize</item>
         <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonLogout" parent="AppTheme">
+        <item name="backgroundTint">@color/colorLightGray</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingStart">@dimen/horizontalDoubleMargin</item>
+        <item name="android:paddingEnd">@dimen/horizontalDoubleMargin</item>
     </style>
 
 </resources>

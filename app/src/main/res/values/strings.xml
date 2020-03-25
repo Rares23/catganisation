@@ -7,6 +7,7 @@
 
     <string name="no_breeds">No breeds to show!</string>
     <string name="wiki_link">Wiki Link</string>
+    <string name="logged_successfully">You authenticate with success!</string>
     <!--  hints  -->
     <string name="email_hint">Your email</string>
     <string name="password_hint">Your password</string>
