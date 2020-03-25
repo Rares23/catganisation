@@ -126,10 +126,4 @@ class FiltersViewModel @Inject constructor(
         saveFilters.dispose()
         resetFilters.dispose()
     }
-
-    fun clearData() {
-        submitNotify.value = null
-        countryNotifyAction.value = null
-        countriesList.clear()
-    }
 }

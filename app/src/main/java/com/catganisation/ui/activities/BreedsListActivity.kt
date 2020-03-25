@@ -2,9 +2,7 @@ package com.catganisation.ui.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.catganisation.R
 import com.catganisation.app.CatganisationApplication
 import com.catganisation.data.models.Breed
-import com.catganisation.di.components.DaggerAppComponent
 import com.catganisation.ui.adapters.BreedAdapter
 import com.catganisation.ui.listeners.OnBreedImageLoad
 import com.catganisation.ui.listeners.OnBreedItemSelect
+import com.catganisation.ui.uitls.ActivityRequestCodes
 import com.catganisation.ui.viewmodels.BreedsListViewModel
 import kotlinx.android.synthetic.main.content_breeds_list.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -59,6 +57,13 @@ class BreedsListActivity : AppCompatActivity(),
     private fun initToolbar() {
         toolbar.title = getString(R.string.app_name)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val profileIcon: Drawable? = ResourcesCompat.getDrawable(resources, R.drawable.ic_account_circle, null)
+        profileIcon?.let {
+            DrawableCompat.setTint(it, ResourcesCompat.getColor(resources, R.color.colorWhite,null))
+        }
+        supportActionBar?.setHomeAsUpIndicator(profileIcon)
+        supportActionBar?.setHomeButtonEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,8 +87,31 @@ class BreedsListActivity : AppCompatActivity(),
                 true
             }
 
+            android.R.id.home -> {
+                onProfileMenuItemClick()
+                return true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun onProfileMenuItemClick() {
+        if(breedsListViewModel.isLogged.value == true) {
+            openProfile()
+        } else if (breedsListViewModel.isLogged.value == false) {
+            openLogin()
+        }
+    }
+
+    private fun openLogin() {
+        val intent: Intent = Intent(this, LoginActivity::class.java)
+        startActivityForResult(intent, ActivityRequestCodes.LOGIN_REQUEST_CODE)
+    }
+
+    private fun openProfile() {
+        val intent: Intent = Intent(this, ProfileActivity::class.java)
+        startActivityForResult(intent, ActivityRequestCodes.PROFILE_REQUEST_CODE)
     }
 
     private fun openFilters() {
@@ -98,9 +126,14 @@ class BreedsListActivity : AppCompatActivity(),
                     breedsListViewModel.getBreeds()
                 }
             }
+            ActivityRequestCodes.PROFILE_REQUEST_CODE,
+            ActivityRequestCodes.LOGIN_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    breedsListViewModel.checkLoggedUser()
+                }
+            }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     private fun initializeViewModel() {
@@ -131,6 +164,7 @@ class BreedsListActivity : AppCompatActivity(),
             }
         })
 
+        breedsListViewModel.checkLoggedUser()
         breedsListViewModel.getBreeds()
     }
 

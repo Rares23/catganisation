@@ -2,6 +2,7 @@ package com.catganisation.ui.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.catganisation.data.models.Breed
+import com.catganisation.data.repositories.AuthRepository
 import com.catganisation.data.repositories.BreedRepository
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
@@ -14,6 +15,7 @@ class BreedDetailsViewModel @Inject constructor(
 ): BaseViewModel() {
     private lateinit var subscription: Disposable
     val breed: MutableLiveData<Breed> = MutableLiveData()
+
 
     fun loadBreed(breedId: String?) {
         if(breedId == null) {

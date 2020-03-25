@@ -2,8 +2,10 @@ package com.catganisation.ui.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.catganisation.data.models.Breed
+import com.catganisation.data.repositories.AuthRepository
 import com.catganisation.data.repositories.BreedRepository
 import com.catganisation.data.repositories.FilterRepository
+import com.catganisation.data.utils.AuthConstants
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -11,14 +13,17 @@ import javax.inject.Inject
 class BreedsListViewModel @Inject constructor(
     private val breedRepository: BreedRepository,
     private val filterRepository: FilterRepository,
+    private val authRepository: AuthRepository,
     private val ioScheduler: Scheduler,
     private val uiScheduler: Scheduler) : BaseViewModel() {
 
     private lateinit var loadBreedsSubscription: Disposable
+    private lateinit var checkLoggedUserSubscription: Disposable
     private val loadBreedImageDisposables: HashMap<String, Disposable> = HashMap()
 
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val breedsList: MutableLiveData<List<Breed>> = MutableLiveData()
+    val isLogged: MutableLiveData<Boolean> = MutableLiveData()
 
     val notifyBreedItemUpdate: MutableLiveData<Breed> = MutableLiveData()
 
@@ -75,8 +80,23 @@ class BreedsListViewModel @Inject constructor(
         //show a error message
     }
 
+    fun checkLoggedUser() {
+        checkLoggedUserSubscription = authRepository.getLoggedUser()
+            .subscribeOn(ioScheduler)
+            .observeOn(uiScheduler)
+            .subscribe (
+                {
+                    isLogged.value = it != AuthConstants.NULL_USER
+                },
+                {
+                    isLogged.value = false
+                }
+            )
+    }
+
     override fun onCleared() {
         super.onCleared()
         loadBreedsSubscription.dispose()
+        checkLoggedUserSubscription.dispose()
     }
 }
