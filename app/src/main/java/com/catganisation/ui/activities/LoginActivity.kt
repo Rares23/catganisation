@@ -3,6 +3,7 @@ package com.catganisation.ui.activities
 import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -50,6 +51,16 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initializeViewModel() {
         (application as CatganisationApplication).getAppComponent().inject(this)
+
+        loginViewModel.loadingAuth.observe(this, Observer {loading ->
+            if(loading) {
+                button_login.visibility = View.GONE
+                progressBar_loginLoading.visibility = View.VISIBLE
+            } else {
+                button_login.visibility = View.VISIBLE
+                progressBar_loginLoading.visibility = View.GONE
+            }
+        })
 
         loginViewModel.authResponse.observe(this, Observer {
 

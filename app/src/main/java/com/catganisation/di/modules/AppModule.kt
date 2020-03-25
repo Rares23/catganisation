@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.util.Patterns
 import com.catganisation.app.CatganisationApplication
 import com.catganisation.data.datasource.ConcreteCountriesDataSource
 import com.catganisation.data.datasource.ConcreteLoggedUserDataSource
@@ -12,12 +13,15 @@ import com.catganisation.data.datasource.LoggedUserDataSource
 import com.catganisation.data.network.AuthApiService
 import com.catganisation.data.network.BreedApiService
 import com.catganisation.data.network.FakeAuthApiService
+import com.catganisation.di.modules.RepositoryModule.Companion.EMAIL_ADDRESS_PATTERN
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.regex.Pattern
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module(includes = [
@@ -61,4 +65,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideAuthApiService() : AuthApiService = FakeAuthApiService()
+
+    @Provides
+    @Singleton
+    @Named(EMAIL_ADDRESS_PATTERN)
+    fun provideEmailAddressPattern() : Pattern = Patterns.EMAIL_ADDRESS
 }

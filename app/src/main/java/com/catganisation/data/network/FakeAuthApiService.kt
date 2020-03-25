@@ -8,7 +8,7 @@ class FakeAuthApiService: AuthApiService {
     override fun login(email: String, password: String): Observable<User> {
         return Observable
             .just {
-                return@just if(email == "admin" && password == "catlord") {
+                return@just if(email == "catlord@cats.com" && password == "catlord") {
                     User(email, "cat_lord_token")
                 } else {
                     error("The username or password is incorrect!")

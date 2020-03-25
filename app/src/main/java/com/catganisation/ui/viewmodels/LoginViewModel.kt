@@ -16,12 +16,18 @@ class LoginViewModel @Inject constructor(
 
     private lateinit var loginDisposable: Disposable
 
+    val loadingAuth: MutableLiveData<Boolean> = MutableLiveData()
     val authResponse: MutableLiveData<AuthResponse?> = MutableLiveData()
 
     fun login(email: String, password: String) {
         loginDisposable = authRepository.login(email, password)
             .subscribeOn(ioScheduler)
             .observeOn(uiScheduler)
+            .doOnSubscribe {
+                loadingAuth.value = true
+            }.doOnTerminate {
+                loadingAuth.value = false
+            }
             .subscribe (
                 { authResponse.postValue(it) },
                 {

@@ -1,5 +1,6 @@
 package com.catganisation.data.repositories
 
+import android.util.Patterns
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.catganisation.RxImmediateSchedulerRule
 import com.catganisation.data.datasource.LoggedUserDataSource
@@ -16,8 +17,11 @@ import org.junit.Rule
 import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class ConcreteAuthRepositoryTest {
 
@@ -33,6 +37,12 @@ class ConcreteAuthRepositoryTest {
     @Mock
     private lateinit var loggedUserDataSource: LoggedUserDataSource
 
+    @Mock
+    private lateinit var emailAddressPattern: Pattern
+
+    @Mock
+    private lateinit var emailAddressMatcher: Matcher
+
     private lateinit var authRepository : AuthRepository
 
     @Before
@@ -41,17 +51,29 @@ class ConcreteAuthRepositoryTest {
 
         authRepository = ConcreteAuthRepository(
             authApiService,
-            loggedUserDataSource
+            loggedUserDataSource,
+            emailAddressPattern
         )
     }
 
     @Test
     fun `test login successfully`() {
-        Mockito.`when`(authApiService.login("test", "catlord"))
-            .thenReturn(Observable.just(User("test", "cat_lord_token")))
+        val user: User = User("test@cats.com", "cat_lord_token")
+
+        Mockito.`when`(emailAddressPattern.matcher("test@cats.com"))
+            .thenReturn(emailAddressMatcher)
+
+        Mockito.`when`(emailAddressMatcher.matches())
+            .thenReturn(true)
+
+        Mockito.`when`(loggedUserDataSource.saveLoggedUser(user))
+            .thenReturn(Observable.just(true))
+
+        Mockito.`when`(authApiService.login("test@cats.com", "catlord"))
+            .thenReturn(Observable.just(user))
 
         val testObserver: TestObserver<AuthResponse> = TestObserver()
-        authRepository.login("test", "catlord").subscribe(testObserver)
+        authRepository.login("test@cats.com", "catlord").subscribe(testObserver)
 
         testObserver.assertValue {
             it.success
@@ -60,16 +82,24 @@ class ConcreteAuthRepositoryTest {
 
     @Test
     fun `test login with validation error`() {
-        Mockito.`when`(loggedUserDataSource.saveLoggedUser(User("test", "wrongpassword")))
+        Mockito.`when`(emailAddressPattern.matcher("test"))
+            .thenReturn(emailAddressMatcher)
+
+        Mockito.`when`(emailAddressMatcher.matches())
+            .thenReturn(false)
+
+        Mockito.`when`(loggedUserDataSource.saveLoggedUser(User("test@cats.com", "wrongpassword")))
             .thenReturn(Observable.just(true))
 
-        Mockito.`when`(authApiService.login("test", "wrongpassword"))
+        Mockito.`when`(authApiService.login("test@cats.com", "wrongpassword"))
             .thenReturn(Observable.error(Error("The username or password is incorrect")))
 
 
         val testObserver: TestObserver<AuthResponse> = TestObserver()
         authRepository.login("test", "wrongpassword").subscribe(testObserver)
-        testObserver.assertError(Error::class.java)
+        testObserver.assertValue {
+            !it.success
+        }
     }
 
     @Test
