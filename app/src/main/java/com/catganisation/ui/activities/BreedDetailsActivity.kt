@@ -15,6 +15,7 @@ import com.catganisation.app.CatganisationApplication
 import com.catganisation.data.models.Breed
 import com.catganisation.ui.viewmodels.BreedDetailsViewModel
 import kotlinx.android.synthetic.main.content_breed_details.*
+import kotlinx.android.synthetic.main.item_view_country.*
 import kotlinx.android.synthetic.main.toolbar_breed_details.*
 import javax.inject.Inject
 
@@ -47,6 +48,10 @@ class BreedDetailsActivity : AppCompatActivity() {
             }
         })
 
+        breedDetailsViewModel.country.observe(this, Observer {
+            textView_location.text = it.toString()
+        })
+
         breedDetailsViewModel.loadBreed(intent.getStringExtra("breedId"))
     }
 
@@ -63,14 +68,12 @@ class BreedDetailsActivity : AppCompatActivity() {
         imageView_wiki.setOnClickListener(wikiClickListener)
         textView_wiki.setOnClickListener(wikiClickListener)
 
-        imageView_breed.post {
-            if(breed.imageUrl.isNullOrEmpty()) {
-                imageView_breed.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_cat_image_placeholder, null))
-            } else {
-                Glide.with(this)
-                    .load(breed.imageUrl)
-                    .into(imageView_breed)
-            }
+        if(breed.imageUrl.isNullOrEmpty()) {
+            imageView_breed.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_cat_image_placeholder, null))
+        } else {
+            Glide.with(this)
+                .load(breed.imageUrl)
+                .into(imageView_breed)
         }
     }
 
